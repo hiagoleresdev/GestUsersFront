@@ -1,0 +1,60 @@
+<div class="container-fluid">
+  <h2 class="mb-4">Colaboradores</h2>
+
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Novo Colaborador</h5>
+      <div class="row g-2">
+        <div class="col-md-2"><input type="text" class="form-control" [(ngModel)]="newEmployee.code" placeholder="Código" /></div>
+        <div class="col-md-3"><input type="text" class="form-control" [(ngModel)]="newEmployee.name" placeholder="Nome" /></div>
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="newEmployee.unitId">
+            <option [ngValue]="0">Selecione a Unidade...</option>
+            <option *ngFor="let u of activeUnits$ | async" [ngValue]="u.id">{{ u.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select" [(ngModel)]="newEmployee.userId">
+            <option [ngValue]="0">Usuário...</option>
+            <option *ngFor="let usr of activeUsers$ | async" [ngValue]="usr.id">{{ usr.login }}</option>
+          </select>
+        </div>
+        <div class="col-md-2"><button class="btn btn-primary w-100" (click)="create()">Cadastrar</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <table class="table table-striped table-hover mb-0">
+      <thead class="table-dark">
+        <tr><th>Código</th><th>Nome</th><th>Unidade</th><th>Usuário</th><th>Ações</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of employees$ | async">
+          <td>{{ emp.code }}</td>
+          <td>{{ emp.name }}</td>
+          <td>{{ emp.unitName }}</td>
+          <td>{{ emp.userLogin }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-2" (click)="startEdit(emp)">Editar</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="delete(emp.id)">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card mt-4 border-primary" *ngIf="editingId">
+    <div class="card-body bg-light">
+      <h5 class="text-primary">Editar Colaborador (ID: {{ editingId }})</h5>
+      <div class="d-flex gap-3 align-items-center mt-3">
+        <input type="text" class="form-control w-25" [(ngModel)]="editingEmployee.name" placeholder="Nome" />
+        <select class="form-select w-25" [(ngModel)]="editingEmployee.unitId">
+          <option *ngFor="let u of activeUnits$ | async" [ngValue]="u.id">{{ u.name }}</option>
+        </select>
+        <button class="btn btn-success" (click)="update()">Salvar</button>
+        <button class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

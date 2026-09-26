@@ -1,0 +1,17 @@
+<div class="container mt-5" style="max-width: 400px;">
+  <div class="card shadow p-4">
+    <h2 class="text-center mb-4">Login</h2>
+    <form (ngSubmit)="onLogin()">
+      <div class="mb-3">
+        <label class="form-label">Login:</label>
+        <input type="text" class="form-control" [(ngModel)]="loginData.login" name="login" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Senha:</label>
+        <input type="password" class="form-control" [(ngModel)]="loginData.passwordHash" name="passwordHash" required />
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Entrar</button>
+    </form>
+    <p class="mt-3 text-center">Não tem uma conta? <a routerLink="/register">Cadastre-se</a></p>
+  </div>
+</div>

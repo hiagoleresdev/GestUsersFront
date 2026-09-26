@@ -1,0 +1,87 @@
+<div class="container-fluid">
+  <h2 class="mb-4">Unidades</h2>
+
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Nova Unidade</h5>
+      <div class="row g-2">
+        <div class="col-md-3"><input type="text" class="form-control" [(ngModel)]="newUnit.code" placeholder="Código (Ex: U01)" /></div>
+        <div class="col-md-6"><input type="text" class="form-control" [(ngModel)]="newUnit.name" placeholder="Nome da Unidade" /></div>
+        <div class="col-md-3"><button class="btn btn-primary w-100" (click)="create()">Cadastrar</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <table class="table table-striped table-hover mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th>Código</th>
+          <th>Nome</th>
+          <th>Status</th>
+          <th>Colaboradores</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let unit of units$ | async">
+          <td>{{ unit.code }}</td>
+          <td>{{ unit.name }}</td>
+          <td>
+            <span class="badge" [ngClass]="unit.isActive ? 'bg-success' : 'bg-danger'">
+              {{ unit.isActive ? 'ATIVA' : 'INATIVA' }}
+            </span>
+          </td>
+          <td>
+            <!-- Passando 'unit' corretamente para a função -->
+            <button class="btn btn-sm btn-outline-info" (click)="viewEmployees(unit)">Visualizar</button>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1" (click)="startEdit(unit)">Editar</button>
+            <button class="btn btn-sm me-1" [ngClass]="unit.isActive ? 'btn-warning' : 'btn-success'" (click)="toggleStatus(unit)">
+              {{ unit.isActive ? 'Inativar' : 'Ativar' }}
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="delete(unit.id)">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Área de Edição de Unidade (Apenas Nome) -->
+  <div class="card mt-4 border-primary" *ngIf="editingId">
+    <div class="card-body bg-light">
+      <h5 class="text-primary">Editar Unidade</h5>
+      <div class="d-flex gap-3 align-items-center mt-3">
+        <input type="text" class="form-control w-50" [(ngModel)]="editingUnit.name" placeholder="Novo Nome da Unidade" />
+        <button class="btn btn-success" (click)="update()">Salvar</button>
+        <button class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Simples -->
+  <div class="modal fade show" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);" *ngIf="showModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Colaboradores da Unidade: {{ selectedUnitName }}</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group" *ngIf="unitEmployees.length > 0">
+            <li class="list-group-item" *ngFor="let emp of unitEmployees">
+              <strong>{{ emp.code }}</strong> - {{ emp.name }}
+            </li>
+          </ul>
+          <p class="text-muted text-center my-3" *ngIf="unitEmployees.length === 0">
+            Nenhum colaborador associado a esta unidade.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" (click)="closeModal()">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
