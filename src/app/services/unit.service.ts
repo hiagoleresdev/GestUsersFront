@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ResultViewModel, UnitModel, CreateUnitCommand, UpdateUnitCommand } from '../models/models';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class UnitService {
-  private apiUrl = 'https://localhost:7014/api/units'; // Ajuste a porta da sua API se necessário
 
+  private apiUrl = `${environment.apiUrl}/units`;
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ResultViewModel<UnitModel[]>> {

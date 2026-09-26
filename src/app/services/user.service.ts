@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ResultViewModel, UserListModel, CreateUserCommand, UpdateUserCommand } from '../models/models';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://localhost:7014/api/users'; // Ajuste a porta da sua API se necessário
+  private apiUrl = `${environment.apiUrl}/users`; // Ajuste a porta da sua API se necessário
 
   constructor(private http: HttpClient) {}
 
